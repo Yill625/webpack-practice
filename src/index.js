@@ -1,4 +1,4 @@
-import './main.css'
+import './main.scss'
 
 const a = 123
 console.log(a)
