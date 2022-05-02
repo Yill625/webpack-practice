@@ -6,5 +6,6 @@ module.exports = {
         // 其他选项
       },
     ],
+    require('autoprefixer')
   ],
 };
