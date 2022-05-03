@@ -6,6 +6,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const MiniCssExtractPlugin= require('mini-css-extract-plugin')
 
 module.exports = {
+  devtool: 'source-map',
   mode: 'development', // 模式
   entry: './src/index.js', // 打包入口地址
   output: {
@@ -31,7 +32,15 @@ module.exports = {
             maxSize: 50 * 1024 //超过50kb不转 base64
           }
         }
-      }
+      },
+      {
+        test: /\.js$/i,
+        use: [
+          {
+            loader: 'babel-loader'
+          }
+        ]
+      },
     ]
   },
   plugins:[ // 配置插件
