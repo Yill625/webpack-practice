@@ -3,6 +3,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
+const MiniCssExtractPlugin= require('mini-css-extract-plugin')
+
 module.exports = {
   mode: 'development', // 模式
   entry: './src/index.js', // 打包入口地址
@@ -14,7 +16,21 @@ module.exports = {
     rules: [
       {
         test: /\.(s[ac]|c)ss$/i, //匹配所有的 css 文件
-        use: ['style-loader','css-loader','postcss-loader','sass-loader'] // use: 对应的 Loader 名称
+        use: [MiniCssExtractPlugin.loader,'css-loader','postcss-loader','sass-loader'] // use: 对应的 Loader 名称
+      },
+      {
+        test: /\.(jpe?g|png|gif)$/i,
+        type: 'asset',
+        generator: {
+          // 输出文件位置以及文件名
+          // [ext] 自带 "." 这个与 url-loader 配置不同
+          filename: "[name][hash:8][ext]"
+        },
+        parser: {
+          dataUrlCondition: {
+            maxSize: 50 * 1024 //超过50kb不转 base64
+          }
+        }
       }
     ]
   },
@@ -22,7 +38,10 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './src/index.html'
     }),
-    new CleanWebpackPlugin()
+    new CleanWebpackPlugin(),
+    new MiniCssExtractPlugin({ // 添加插件
+      filename: '[name].[hash:8].css'
+    }),
   ],
   devServer: {
     static: true,
